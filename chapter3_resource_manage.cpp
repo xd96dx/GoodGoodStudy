@@ -39,6 +39,7 @@ typedef std::string addLines[2];  // not good
 */
 
 /*
+item_17
 以独立语句将 new 对象置入智能指针
 以独立语句将 new 对象存储于智能指针中. 如果不这样做, 一旦异常有可能导致难以察觉的资源泄漏.
 */

@@ -25,6 +25,25 @@ item_15
 在类中, 提供显示转换 (类似 shared_ptr 的get 方法) 或隐式转换 (opeartor () const {return} )
 */
 
+/*
+item_16
+成对使用 new 和 delete 时要采取相同形式
+
+std::string* stringArray = new std::string[100];
+delete stringArray;
+该方式会导致内存泄漏
+delete stringArray[];   // bingo
+
+不要使用数组的形式进行 typedef
+typedef std::string addLines[2];  // not good
+*/
+
+/*
+以独立语句将 new 对象置入智能指针
+以独立语句将 new 对象存储于智能指针中. 如果不这样做, 一旦异常有可能导致难以察觉的资源泄漏.
+*/
+
+
 #include <memory>
 #include <cstdio>
 #include <iostream>

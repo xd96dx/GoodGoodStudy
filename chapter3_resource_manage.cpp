@@ -41,7 +41,17 @@ typedef std::string addLines[2];  // not good
 /*
 item_17
 以独立语句将 new 对象置入智能指针
+object(std::shared_ptr<class>(new class), print);   
+    有的构造类, 在构造object 时, 会先执行 print 后执行构造, 则会出现一下情况: 
+        因为c++ 编译器在编译时的优化, 可能会出现乱序的指令集, 而非预期的执行顺序
+        可能会出现 new class 后, 执行 print 函数, 再调用 shared_ptr 的构造函数, 
+        而如果 print 调用失败, 则有可能返回一个空指针给 shared_ptr, 此时构造的object 持有的是一个空指针
+
 以独立语句将 new 对象存储于智能指针中. 如果不这样做, 一旦异常有可能导致难以察觉的资源泄漏.
+    解决该问题的做法是: 
+        std::shared_ptr<class> p(new class);  用单独语句先在 shared_ptr 中存储对象
+        object(p, print);  再调用 object 的构造, 则不会泄漏
+
 */
 
 

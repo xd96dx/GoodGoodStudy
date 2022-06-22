@@ -65,6 +65,7 @@ item_21
 */
 
 /*
+item_22
 将成员变量声明为 private
 
 1. private 提供了更好的访问权限控制能力
@@ -82,6 +83,52 @@ namespace WebBrowser{
     void clearBrowser(WebBrowsser& wb);
 }
 2. 将一个 class 相关的函数放在多个头文件但隶属于同一个命名空间, 可以在使用时不 include 所有class 相关项, 减少编译项
+*/
+
+/*
+item_24
+若所有参数皆需要类型转换, 则使用 non-member 函数
+
+exp:
+class Ration {
+public:
+    Ration(int numerator = 0,
+            int denominator = 1);
+    int numerator() const;
+    int denominator() const;
+private:
+    ...
+public:
+    const Ration operator* (const Ration& rhs) cosnt;
+}
+
+Ration oneEighth(1, 8);
+Ration oneHalf(1, 2);
+Ration result = oneHalf * oneEighth;  // 正确
+result = resulte * oneHalf;  // 正确
+
+result = oneHalf * 2;  // 正确    oneHalf.operator*(2),  此时 2 被隐式转换
+result = 2 * oneHalf;  // err!!!  相当于 2.operator*(oneHalf)
+
+const Ration operator*(const Ration& lhs, const Ration& rhs) {
+    return Ration(lhs.numerator() * rhs.numerator(),
+                  lhs.denominator() * rhs.denominator());
+}
+Ration oneForth(1, 4);
+Ration result;
+result = noeForth * 2  // 正确
+result = 2 * oneForth  // 正确
+
+*/
+
+/*
+item_25
+写出一个不抛异常的swap 函数
+
+1. 当 std::swap 对你的类型效率不高时, 提供一个 swap 函数, 并不抛出异常
+2. 如果提供一个member swap, 也应提供一个 non-member swap 来调用, 对于class 也需特化 std::swap
+3. 调用 swap 时 应针对 std::swap 使用using 声明, 然后调用 swap 并不带任何 命名空间资格修饰
+4. 为 "用户定义类型" 进行std template 全特化是好的, 但不要尝试在std 内加入某修对 std而言的新东西
 */
 
 #include <memory>
